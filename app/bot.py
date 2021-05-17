@@ -1,5 +1,5 @@
 import os
-PORT = int(os.environ.get("PORT", 5000))
+
 
 from telegram.ext import (
     Updater,
@@ -13,7 +13,7 @@ from telegram import Update
 from app import get_price_change
 import logging
 
-
+PORT = int(os.environ.get("PORT", 5000))
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
