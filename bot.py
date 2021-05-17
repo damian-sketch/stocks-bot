@@ -37,6 +37,15 @@ def main():
     dispatcher.add_handler(start_handler) # this line is what matters most
     dispatcher.add_handler(px_handler)
     updater.start_polling()
+
+    updater.start_webhook(
+        listen="0.0.0.0",
+        port=int(PORT),
+        url_path=TOKEN
+    )
+    updater.bot.setWebhook("https://marketsbot101.herokuapp.com/" + TOKEN)
+    
+    updater.idle()
     
 
 if __name__ == "__main__":
