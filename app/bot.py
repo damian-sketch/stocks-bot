@@ -37,7 +37,7 @@ def main():
     px_handler = CommandHandler('get_px', get_px_change)
     dispatcher.add_handler(start_handler) # this line is what matters most
     dispatcher.add_handler(px_handler)
-    updater.start_polling()
+#     updater.start_polling()
 
     updater.start_webhook(
         listen="0.0.0.0",
