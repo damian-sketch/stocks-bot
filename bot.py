@@ -12,6 +12,9 @@ from telegram import Update
 from app import get_price_change
 import logging
 
+
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
 
