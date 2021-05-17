@@ -13,7 +13,7 @@ from telegram import Update
 from app import get_price_change
 import logging
 
-# PORT = int(os.environ.get("WEBHOOK_PORT", 443))
+PORT = int(os.environ.get("WEBHOOK_PORT", 443))
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -39,11 +39,11 @@ def main():
     dispatcher.add_handler(px_handler)
     updater.start_polling()
 
-#     updater.start_webhook(
-#         listen="0.0.0.0",
-#         port=int(PORT),
-#         url_path=TOKEN,
-#         webhook_url="https://marketsbot101.herokuapp.com/" + TOKEN)
+    updater.start_webhook(
+        listen="0.0.0.0",
+        port=int(PORT),
+        url_path=TOKEN,
+        webhook_url="https://marketsbot101.herokuapp.com/" + TOKEN)
 
     
     updater.idle()
