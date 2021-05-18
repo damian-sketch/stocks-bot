@@ -46,7 +46,6 @@ def main():
         webhook_url="https://marketsbot101.herokuapp.com/" + TOKEN)
 
     
-    updater.idle()
     
 
 if __name__ == "__main__":
