@@ -43,7 +43,7 @@ def main():
         listen="0.0.0.0",
         url_path=TOKEN,
         port=int(PORT),
-        webhook_url=f"https://marketsbot101.herokuapp.com:${int(PORT)}/${TOKEN}"
+        webhook_url=f"http://marketsbot101.herokuapp.com:${int(PORT)}/${TOKEN}"
     )
 
     updater.idle()
