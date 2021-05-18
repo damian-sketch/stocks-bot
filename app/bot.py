@@ -13,7 +13,7 @@ from telegram import Update
 from app import get_price_change
 import logging
 
-# PORT = int(os.environ.get("WEBHOOK_PORT", 443))
+PORT = int(os.environ.get("WEBHOOK_PORT", 443))
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -42,6 +42,7 @@ def main():
     updater.start_webhook(
         listen="0.0.0.0",
         url_path=TOKEN,
+        port=int(PORT),
         webhook_url="https://marketsbot101.herokuapp.com/" + TOKEN)
 
     
