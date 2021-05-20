@@ -1,55 +1,58 @@
-import os
-
-
-from telegram.ext import (
-    Updater,
-    CommandHandler,
-    CallbackContext,
-    ConversationHandler,
-    Filters
-)
-
+import re
+import telegram
+from flask import Flask, request
+from credentials import TOKEN, URL
 from telegram import Update
 from app import get_price_change
-import logging
-
-PORT = int(os.environ.get("WEBHOOK_PORT", 443))
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                     level=logging.INFO)
 
 
-# what your bot should reply when we send the /start command
-def start(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
 
-def get_px_change(update, context):
+global bot
+global TOKEN
+bot = telegram.Bot(token=TOKEN)
 
-    message = get_price_change()
-    update.message.reply_text(message)
+app = Flask(__name__)
 
-    # the main function, with some boilerplate
-def main():
-    updater = Updater(token= TOKEN, use_context=True)
-    dispatcher = updater.dispatcher
-    start_handler = CommandHandler('start', get_price_change)
-    px_handler = CommandHandler('get_px', get_px_change)
-    dispatcher.add_handler(start_handler) # this line is what matters most
-    dispatcher.add_handler(px_handler)
-    updater.start_polling()
+@app.route('/{}'.format(TOKEN), methods=['POST'])
+def respond():
+   # retrieve the message in JSON and then transform it to Telegram object
+   update = telegram.Update.de_json(request.get_json(force=True), bot)
 
-    updater.start_webhook(
-        listen="0.0.0.0",
-        url_path=TOKEN,
-        port=int(PORT),
-        webhook_url=f"http://marketsbot101.herokuapp.com:${int(PORT)}/${TOKEN}"
-    )
+   chat_id = update.message.chat.id
+   msg_id = update.message.message_id
 
-    updater.idle()
+   # Telegram understands UTF-8, so encode text for unicode compatibility
+   text = update.message.text.encode('utf-8').decode()
+   # for debugging purposes only
+   print("got text message :", text)
+   
+   if text == "/get_px":
+       price_change = get_price_change()
+       bot.sendMessage(chat_id=chat_id, text=price_change, reply_to_message_id=msg_id)
 
+
+   else:
+       bot.sendMessage(chat_id=chat_id, text="There was a problem in the name you used, please enter different name", reply_to_message_id=msg_id)
+
+   return 'ok'
+
+
+@app.route('/setwebhook', methods=['GET', 'POST'])
+def set_webhook():
+    # we use the bot object to link the bot to our app which lives
+    # in the link provided by URL
+    s = bot.setWebhook('{URL}{HOOK}'.format(URL=URL, HOOK=TOKEN))
+    # something to let us know things work
+    if s:
+        return "webhook setup ok"
+    else:
+        return "webhook setup failed"
     
-    
 
-if __name__ == "__main__":
-    main()
+@app.route('/')
+def index():
+   return '.'
+
+
+if __name__ == '__main__':
+   app.run(threaded=True)
