@@ -9,7 +9,7 @@ def get_price_change():
     ''' Get the info of your currency'''
     # eth = crypto.info
     '''Get  the history of a custom timeframe'''
-    hist = crypto.history(period="1d")
+    hist = crypto.history(period="1h")
     
     # Make the data readable
     data = pd.DataFrame(hist)
