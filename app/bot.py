@@ -11,7 +11,7 @@ global bot
 global TOKEN
 bot = telegram.Bot(token=TOKEN)
 
-
+app = Flask(__name__)
 @app.route('/{}'.format(TOKEN), methods=['POST'])
 def respond():
    # retrieve the message in JSON and then transform it to Telegram object

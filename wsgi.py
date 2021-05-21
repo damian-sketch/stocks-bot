@@ -1,6 +1,5 @@
-from app import bot
+from app.bot import app
 
-app = Flask(__name__)
 
 if __name__ == '__main__':
    app.run(threaded=True)
