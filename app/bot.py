@@ -1,9 +1,9 @@
 import re
 import telegram
 from flask import Flask, request
-from credentials import TOKEN, URL
+from .credentials import TOKEN, URL
 from telegram import Update
-from app import get_price_change
+from .app import get_price_change
 
 
 
